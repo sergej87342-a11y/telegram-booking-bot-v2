@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram-бот для бизнеса</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+      color: #1a202c;
+      line-height: 1.55;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 40px 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .hero .icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .hero h1 {
+      font-size: 30px;
+      font-weight: 700;
+      color: #2c5282;
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .hero .subtitle {
+      font-size: 17px;
+      color: #4a5568;
+    }
+
+    .hero .targets {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #718096;
+      font-weight: 500;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero .targets .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      background: #dbeafe;
+      color: #2c5282;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero .targets .tag:hover {
+      background: #bfdbfe;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero .targets .tag:active {
+      transform: scale(0.97);
+      transition: transform 0.1s ease;
+    }
+
+    .hero .ready {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #4a5568;
+      font-weight: 500;
+    }
+
+    .hero .cta-button {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 14px 28px;
+      background: #0088cc;
+      color: #ffffff;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero .cta-button:hover {
+      background: #0077b5;
+      transform: scale(1.03);
+      box-shadow: 0 6px 16px rgba(0, 136, 204, 0.4);
+    }
+
+    .hero .cta-button:active {
+      transform: scale(0.97);
+      transition: transform 0.1s ease;
+    }
+
+    .hero .cta-note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #718096;
+      text-align: center;
+    }
+
+    /* ===== Sections (carded blocks) ===== */
+    .section {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 28px 28px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c5282;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section h2 .badge {
+      font-size: 22px;
+    }
+
+    /* ===== Numbered steps ===== */
+    .steps {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 10px 0 10px 44px;
+      color: #2d3748;
+      font-size: 16px;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 30px;
+      height: 30px;
+      background: #0088cc;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .steps li + li {
+      border-top: 1px solid #edf2f7;
+    }
+
+    /* ===== Checkmark list ===== */
+    .check-list {
+      list-style: none;
+    }
+
+    .check-list li {
+      position: relative;
+      padding: 10px 0 10px 36px;
+      color: #2d3748;
+      font-size: 16px;
+    }
+
+    .check-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 24px;
+      height: 24px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .check-list li + li {
+      border-top: 1px solid #edf2f7;
+    }
+
+    /* ===== Benefits (icon + text) ===== */
+    .benefits {
+      list-style: none;
+    }
+
+    .benefits li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      color: #2d3748;
+      font-size: 16px;
+    }
+
+    .benefits li + li {
+      border-top: 1px solid #edf2f7;
+    }
+
+    .benefits .emoji {
+      font-size: 24px;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ===== CTA buttons ===== */
+    .cta {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      text-align: center;
+      transition: transform 0.1s ease, background 0.2s ease;
+    }
+
+    .btn:last-child { margin-bottom: 0; }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: #0088cc;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+    }
+    .btn-primary:hover { background: #0077b5; }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #0088cc;
+      border: 2px solid #0088cc;
+    }
+    .btn-secondary:hover { background: #f0f9ff; }
+
+    .section p {
+      color: #2d3748;
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px 0 8px;
+      font-size: 13px;
+      color: #a0aec0;
+    }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 480px) {
+      body { padding: 16px 12px; }
+      .hero { padding: 28px 20px; border-radius: 12px; }
+      .hero h1 { font-size: 24px; }
+      .hero .subtitle { font-size: 16px; }
+      .hero .cta-button { padding: 12px 24px; font-size: 16px; margin-top: 18px; }
+      .section { padding: 22px 18px; border-radius: 12px; }
+      .section h2 { font-size: 18px; }
+      .steps li, .check-list li, .benefits li { font-size: 15px; }
+      .cta { padding: 18px; border-radius: 12px; }
+      .btn { padding: 14px 20px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+      <div class="icon">💬</div>
+      <h1>Telegram-бот для бизнеса</h1>
+      <p class="subtitle">
+        Автоматически отвечает клиентам, показывает услуги и принимает заявки.
+      </p>
+      <div class="targets">
+        <span>Подходит для:</span>
+        <span class="tag">маникюр</span>
+        <span class="tag">парикмахер</span>
+        <span class="tag">ремонт</span>
+        <span class="tag">услуги</span>
+      </div>
+      <p class="ready">⚡ Работает сразу после настройки — без сложностей</p>
+      <a class="cta-button"
+         href="https://t.me/simple_booking_serge_bot"
+         target="_blank"
+         rel="noopener">
+        Попробовать бесплатно
+      </a>
+      <p class="cta-note">Без регистрации • 30 секунд</p>
+    </div>
+
+    <!-- ===== Как пользоваться ===== -->
+    <div class="section">
+      <h2><span class="badge">👤</span> Как пользоваться</h2>
+      <ol class="steps">
+        <li>Нажмите кнопку «Открыть бота»</li>
+        <li>Выберите услугу из меню</li>
+        <li>Посмотрите цены</li>
+        <li>Нажмите «Записаться»</li>
+        <li>Оставьте имя и телефон</li>
+      </ol>
+    </div>
+
+    <!-- ===== Для владельца бизнеса ===== -->
+    <div class="section">
+      <h2><span class="badge">🏢</span> Для владельца бизнеса</h2>
+      <ul class="check-list">
+        <li>Вы получаете заявки прямо в Telegram</li>
+        <li>Меняете услуги, цены и адрес прямо в боте</li>
+        <li>Не нужен программист — всё под вашим контролем</li>
+      </ul>
+    </div>
+
+    <!-- ===== Что вы получаете ===== -->
+    <div class="section">
+      <h2><span class="badge">🎁</span> Что вы получаете</h2>
+      <ul class="benefits">
+        <li><span class="emoji">📦</span><span>Готового Telegram-бота, настроенного под вашу нишу</span></li>
+        <li><span class="emoji">⚙️</span><span>Индивидуальную настройку: услуги, цены, адрес, тексты</span></li>
+        <li><span class="emoji">💬</span><span>Поддержку и помощь при первом запуске</span></li>
+      </ul>
+    </div>
+
+    <!-- ===== AI-помощник ===== -->
+    <div class="section">
+      <h2><span class="badge">🤖</span> AI-помощник для записи</h2>
+      <p>
+        AI-помощник помогает клиенту выбрать услугу и записаться.
+        Запись проходит прямо в Telegram — без формы, без email, без сайта.
+      </p>
+      <a class="btn btn-primary"
+         href="https://t.me/simple_booking_serge_bot"
+         target="_blank"
+         rel="noopener">
+        Открыть Telegram-бота
+      </a>
+    </div>
+
+    <!-- ===== CTA buttons ===== -->
+    <div class="cta">
+      <!-- Кнопка перехода в бота -->
+      <a class="btn btn-primary"
+         href="https://t.me/simple_booking_serge_bot"
+         target="_blank"
+         rel="noopener">
+        Открыть бота
+      </a>
+
+      <!-- Кнопка контакта с владельцем -->
+      <a class="btn btn-secondary"
+         href="https://t.me/sergei_botmaker"
+         target="_blank"
+         rel="noopener">
+        Написать в Telegram
+      </a>
+    </div>
+
+    <div class="footer">
+      Простой и удобный способ автоматизации.
+    </div>
+
+  </div>
+</body>
+</html>
